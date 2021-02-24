@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {windowWidth} from '../utils/Dim';
 
 export const colors = {
   white: '#fff',
@@ -59,6 +60,31 @@ const GlobalStyle = StyleSheet.create({
   },
   selfCenter: {
     alignSelf: 'center',
+  },
+  inputContainer: {
+    width: windowWidth * 0.8,
+    borderColor: '#999',
+    borderWidth: 0.5,
+    paddingLeft: 20,
+    borderRadius: 100,
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    elevation: 6,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+
+    shadowOffset: {
+      height: 1,
+      width: 1,
+    },
+  },
+  input: {fontFamily: 'Poppins-Italic', fontSize: 14},
+  errorMessage: {
+    fontFamily: 'Poppins-Regular',
+    color: '#c22222',
+    fontSize: 15,
+    textAlign: 'center',
   },
 });
 

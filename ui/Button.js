@@ -4,28 +4,21 @@ import GlobalStyle from '../utils/GlobalStyle';
 
 const Button = ({children, onPress, color, icon, pv, ph}) => {
   return (
-    <View
-      elevation={12}
-      style={{
-        backgroundColor: color,
-        alignSelf: 'flex-start',
-
-        borderRadius: 15,
-        shadowColor: '#000000',
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        shadowOffset: {
-          height: 1,
-          width: 1,
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        GlobalStyle.row,
+        {
+          alignSelf: 'center',
+          paddingHorizontal: ph,
+          paddingVertical: pv,
+          backgroundColor: color,
+          borderRadius: 8,
         },
-      }}>
-      <TouchableOpacity
-        onPress={onPress}
-        style={[GlobalStyle.row, {paddingHorizontal: ph, paddingVertical: pv}]}>
-        {icon}
-        <Text style={styles.buttonText}>{children}</Text>
-      </TouchableOpacity>
-    </View>
+      ]}>
+      {icon}
+      <Text style={styles.buttonText}>{children}</Text>
+    </TouchableOpacity>
   );
 };
 
