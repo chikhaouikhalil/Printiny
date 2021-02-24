@@ -5,10 +5,15 @@ import GlobalStyle from '../utils/GlobalStyle';
 import {windowWidth} from '../utils/Dim';
 import {SkypeIndicator} from 'react-native-indicators';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 const LoadingScreen = ({navigation}) => {
   React.useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
+    const subscriber = auth().onAuthStateChanged(async (user) => {
+      await GoogleSignin.configure({
+        webClientId:
+          '246075299329-lb4501931f8b6uvlo4unan902dm01ugv.apps.googleusercontent.com',
+      });
       if (user) {
         setTimeout(() => {
           navigation.replace('DrawerNavigation');

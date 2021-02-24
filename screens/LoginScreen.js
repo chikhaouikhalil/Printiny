@@ -10,6 +10,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import auth from '@react-native-firebase/auth';
 import Button from '../ui/Button';
 import {SkypeIndicator} from 'react-native-indicators';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 // logo animation
 const zoomOut = {
@@ -32,6 +33,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [socialLoading, setSocialLoading] = React.useState(false);
   const [show, setShow] = React.useState(true);
 
   const hideLogo = () => {
@@ -70,6 +72,27 @@ const LoginScreen = ({navigation}) => {
             return setError('Vérifier votre connexion');
         }
       });
+  };
+
+  const onGoogleButtonPress = async () => {
+    try {
+      setSocialLoading(true);
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log(error);
+      setSocialLoading(false);
+    }
+  };
+
+  const googleSignIn = () => {
+    onGoogleButtonPress().then(() => navigation.replace('DrawerNavigation'));
   };
 
   return (
@@ -175,23 +198,31 @@ const LoginScreen = ({navigation}) => {
             ]}>
             Ou bien
           </Text>
-          <Button
-            color="#000"
-            pv={5}
-            onPress={() => alert('Facebook login')}
-            ph={20}
-            icon={<AntDesign name="facebook-square" size={20} color="#fff" />}>
-            Se connecter via Facebook
-          </Button>
-          <View style={{marginVertical: 10}} />
-          <Button
-            color="#000"
-            pv={5}
-            onPress={() => alert('google-login')}
-            ph={20}
-            icon={<AntDesign name="google" size={20} color="#fff" />}>
-            Se connecter via Gmail
-          </Button>
+          {socialLoading ? (
+            <SkypeIndicator color="#000" size={40} />
+          ) : (
+            <>
+              <Button
+                color="#000"
+                pv={5}
+                onPress={() => alert('Facebook login')}
+                ph={20}
+                icon={
+                  <AntDesign name="facebook-square" size={20} color="#fff" />
+                }>
+                Se connecter via Facebook
+              </Button>
+              <View style={{marginVertical: 10}} />
+              <Button
+                color="#000"
+                pv={5}
+                onPress={googleSignIn}
+                ph={20}
+                icon={<AntDesign name="google" size={20} color="#fff" />}>
+                Se connecter via Gmail
+              </Button>
+            </>
+          )}
           {!show && (
             <Logo
               width={windowWidth * 0.6}
