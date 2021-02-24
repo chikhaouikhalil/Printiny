@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import Button from '../ui/Button';
 import {SkypeIndicator} from 'react-native-indicators';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
 
 // logo animation
 const zoomOut = {
@@ -84,15 +85,61 @@ const LoginScreen = ({navigation}) => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
       // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
+      return auth()
+        .signInWithCredential(googleCredential)
+        .then(() => navigation.replace('DrawerNavigation'))
+        .catch((error) => {
+          setSocialLoading(false);
+          setError(error.code);
+        });
     } catch (error) {
       console.log(error);
       setSocialLoading(false);
     }
   };
 
+  const onFacebookButtonPress = async () => {
+    setError(null);
+    setSocialLoading(true);
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+      if (result.isCancelled) {
+        setSocialLoading(false);
+        throw 'User cancelled the login process';
+      }
+      // Once signed in, get the users AccesToken
+      const data = await AccessToken.getCurrentAccessToken();
+      if (!data) {
+        setSocialLoading(false);
+        throw 'Something went wrong obtaining access token';
+      }
+      // Create a Firebase credential with the AccessToken
+      const facebookCredential = auth.FacebookAuthProvider.credential(
+        data.accessToken,
+      );
+      // Sign-in the user with the credential
+      return auth()
+        .signInWithCredential(facebookCredential)
+        .then(() => navigation.replace('DrawerNavigation'))
+        .catch((error) => {
+          setSocialLoading(false);
+          setError(error.code);
+        });
+    } catch (error) {
+      setSocialLoading(false);
+      console.log(error);
+    }
+  };
+
   const googleSignIn = () => {
-    onGoogleButtonPress().then(() => navigation.replace('DrawerNavigation'));
+    onGoogleButtonPress();
+  };
+
+  const facebookSignIn = () => {
+    onFacebookButtonPress();
   };
 
   return (
@@ -205,7 +252,7 @@ const LoginScreen = ({navigation}) => {
               <Button
                 color="#000"
                 pv={5}
-                onPress={() => alert('Facebook login')}
+                onPress={facebookSignIn}
                 ph={20}
                 icon={
                   <AntDesign name="facebook-square" size={20} color="#fff" />
