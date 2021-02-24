@@ -3,22 +3,24 @@ import {StyleSheet, Text, View} from 'react-native';
 import Logo from '../assets/logo.svg';
 import GlobalStyle from '../utils/GlobalStyle';
 import {windowWidth} from '../utils/Dim';
-import {
-  BallIndicator,
-  BarIndicator,
-  DotIndicator,
-  MaterialIndicator,
-  PacmanIndicator,
-  PulseIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator,
-} from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
+import auth from '@react-native-firebase/auth';
+
 const LoadingScreen = ({navigation}) => {
   React.useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('DrawerNavigation');
-    }, 3000);
+    const subscriber = auth().onAuthStateChanged((user) => {
+      if (user) {
+        setTimeout(() => {
+          navigation.replace('DrawerNavigation');
+        }, 2500);
+      } else {
+        setTimeout(() => {
+          navigation.replace('LoginScreen');
+        }, 2500);
+      }
+    });
+
+    return subscriber; // unsubscribe on unmount
   }, []);
 
   return (

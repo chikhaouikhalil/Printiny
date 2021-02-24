@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "246075299329",
+    "project_id": "printiny-3b749",
+    "storage_bucket": "printiny-3b749.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246075299329:android:5403fe31a00b3bef955200",
+        "android_client_info": {
+          "package_name": "com.printiny"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246075299329-h1tm7tbocam5rts776v4904qi7mpbln1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.printiny",
+            "certificate_hash": "dc75584e2f8b40d722b267bd6ba1612c8bb915dc"
+          }
+        },
+        {
+          "client_id": "246075299329-lb4501931f8b6uvlo4unan902dm01ugv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgM9tjkCYgoK6QrH8gKoUQFDwabxsQi4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246075299329-lb4501931f8b6uvlo4unan902dm01ugv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
